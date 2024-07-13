@@ -1,18 +1,58 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <main class="flex min-h-screen bg-purple-500 lg:bg-gradient-to-r from-red-400 to-pink-400">
+    <transition-group
+        name="list"
+        tag="div"
+        class="sm:flex items-start w-screen px-4 py-10 overflow-x-auto"
+    >
+
+      <List
+          v-for="list in lists"
+          :id="list.id"
+          :title="list.title"
+          :cards="list.cards"
+          :key="list.id"/>
+      <ListCreateForm @create-list="addNewList($event,lists)"/>
+    </transition-group>
+  </main>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+//imports
+import {ref, onMounted} from 'vue'
+import {data} from '@/data.js'
+
+//functions
+import {addNerCard} from '@/cards.js'
+import {addNewList} from '@/lists.js'
+
+import List from '@/components/List.vue'  // @ is an alias to /src
+import ListCreateForm from '@/components/ListCreateForm.vue'
 
 export default {
-  name: 'HomeView',
   components: {
-    HelloWorld
+    List,
+    ListCreateForm,
+  },
+
+  setup() {
+
+    const lists = ref(data)
+
+
+    //events
+    onMounted(() => {
+      window.eventBus.on('add-card', (newCard) => {
+        addNerCard(newCard, lists.value)
+      })
+    })
+
+
+    return {
+      lists,
+      addNewList
+    }
   }
 }
 </script>
+

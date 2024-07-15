@@ -12,7 +12,7 @@
           :title="list.title"
           :cards="list.cards"
           :key="list.id"/>
-      <ListCreateForm @create-list="addNewList($event,lists)"/>
+      <ListCreateForm @create-list="addNewList($event,lists)" key="0"/>
     </transition-group>
   </main>
 </template>
@@ -56,3 +56,15 @@ export default {
 }
 </script>
 
+<style scoped>
+  .list-enter-active,
+  .list-leave-active {
+    transition: all 0.15s;
+  }
+
+  .list-enter-from,
+  .list-leave-to {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+</style>

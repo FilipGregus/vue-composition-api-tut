@@ -17,3 +17,16 @@ export const addNewList = (title, lists) => {
     })
 
 }
+
+/**
+ * edit the title of a list
+ * @param {object} data
+ * @param {array} lists
+ */
+
+export const editListTitle = (data, lists) => {
+    if (!data?.title || !data?.id) return
+
+    const list = lists.find(list => list.id === data.id)
+    list.title = data.title
+}

@@ -24,7 +24,7 @@ import {data} from '@/data.js'
 
 //functions
 import {addNerCard} from '@/cards.js'
-import {addNewList} from '@/lists.js'
+import {addNewList, editListTitle} from '@/lists.js'
 
 import List from '@/components/List.vue'  // @ is an alias to /src
 import ListCreateForm from '@/components/ListCreateForm.vue'
@@ -45,6 +45,10 @@ export default {
       window.eventBus.on('add-card', (newCard) => {
         addNerCard(newCard, lists.value)
       })
+
+      window.eventBus.on('edit-list', (editedList) => {
+        editListTitle(editedList, lists.value)
+      })
     })
 
 
@@ -57,14 +61,14 @@ export default {
 </script>
 
 <style scoped>
-  .list-enter-active,
-  .list-leave-active {
-    transition: all 0.15s;
-  }
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.15s;
+}
 
-  .list-enter-from,
-  .list-leave-to {
-    opacity: 0;
-    transform: scale(0.75);
-  }
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: scale(0.75);
+}
 </style>

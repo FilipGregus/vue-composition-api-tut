@@ -5,7 +5,12 @@
         tag="div"
         class="sm:flex items-start w-screen px-4 py-10 overflow-x-auto"
     >
-
+      <div
+          id="overlay"
+          class="bg-black bg-opacity-70 fixed top-0 left-0 w-full h-screen z-10"
+          key="-1"
+          v-if="overlay"
+      ></div>
       <List
           v-for="list in lists"
           :id="list.id"
@@ -23,7 +28,7 @@ import {ref, onMounted} from 'vue'
 import {data} from '@/data.js'
 
 //functions
-import {addNerCard} from '@/cards.js'
+import {addNerCard, editCardText,deleteCard} from '@/cards.js'
 import {addNewList, editListTitle} from '@/lists.js'
 
 import List from '@/components/List.vue'  // @ is an alias to /src
@@ -38,7 +43,7 @@ export default {
   setup() {
 
     const lists = ref(data)
-
+    const overlay = ref(false)
 
     //events
     onMounted(() => {
@@ -49,12 +54,25 @@ export default {
       window.eventBus.on('edit-list', (editedList) => {
         editListTitle(editedList, lists.value)
       })
+
+      window.eventBus.on('toggle-overlay', (value) => {
+        overlay.value = value
+      })
+
+      window.eventBus.on('delete-card', (card) => {
+        deleteCard(card, lists.value)
+      })
+
+      window.eventBus.on('edit-card-text', (card) => {
+        editCardText(card, lists.value)
+      })
     })
 
 
     return {
       lists,
-      addNewList
+      addNewList,
+      overlay
     }
   }
 }
@@ -70,5 +88,9 @@ export default {
 .list-leave-to {
   opacity: 0;
   transform: scale(0.75);
+}
+
+#overlay{
+  transform: scale(1);
 }
 </style>

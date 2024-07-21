@@ -13,7 +13,7 @@
     </header>
 
     <transition-group name="card" tag="ul">
-      <Card v-for="card in cards" :card='card' :key="card.id"/>
+      <Card v-for="card in cards" :card='card' :listId="id" :key="card.id"/>
     </transition-group>
 
     <CardCreateFrom :listId="id"/>

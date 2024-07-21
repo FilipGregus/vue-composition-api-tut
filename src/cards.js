@@ -14,3 +14,34 @@ export const addNerCard = (data, lists) => {
         text: data.text
     })
 }
+
+
+/**
+ * Remove a card from the list with listId and cardId
+ * @param data
+ * @param lists
+ */
+export const deleteCard = (data, lists) => {
+    if(!data?.listId || !data?.cardId) {
+        return
+    }
+
+    let list = lists.find(list => list.id === data.listId)
+    list.cards = list.cards.filter(card => card.id !== data.cardId)
+}
+
+
+/**
+ * Edit the text of a card from the list with listId and card
+ * @param data
+ * @param lists
+ */
+export const editCardText  = (data, lists) => {
+    if(!data?.listId || !data?.cardId || !data?.newText) {
+        return
+    }
+
+    let list = lists.find(list => list.id === data.listId)
+    let card = list.cards.find(card => card.id === data.cardId)
+    card.text = data.newText
+}

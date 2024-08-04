@@ -24,7 +24,7 @@
 
 <script>
 //imports
-import {ref, onMounted} from 'vue'
+import {ref, onMounted, watch} from 'vue'
 import {data} from '@/data.js'
 
 //functions
@@ -33,6 +33,8 @@ import {addNewList, editListTitle} from '@/lists.js'
 
 import List from '@/components/List.vue'  // @ is an alias to /src
 import ListCreateForm from '@/components/ListCreateForm.vue'
+
+import { MainStore } from '@/store.js';
 
 export default {
   components: {
@@ -45,6 +47,8 @@ export default {
     const lists = ref(data)
     const overlay = ref(false)
 
+    const store = MainStore();
+
     //events
     onMounted(() => {
       window.eventBus.on('add-card', (newCard) => {
@@ -55,8 +59,13 @@ export default {
         editListTitle(editedList, lists.value)
       })
 
-      window.eventBus.on('toggle-overlay', (value) => {
+      // window.eventBus.on('toggle-overlay', (value) => {
+      //   overlay.value = value
+      // })
+
+      watch(() => store.overlay, (value) => {
         overlay.value = value
+        console.log('overlay', overlay.value)
       })
 
       window.eventBus.on('delete-card', (card) => {

@@ -30,6 +30,7 @@ import CardImage from "@/components/CardImage.vue";
 import CardLabels from "@/components/CardLabels.vue";
 
 import {toRefs, reactive,ref} from "vue";
+import { MainStore } from '@/store.js';
 
 export default {
   components: {
@@ -50,6 +51,7 @@ export default {
   setup(props) {
 
     const cardText = ref(null)
+    const store = MainStore();
     const state = reactive({
       isPopped: false,
       isEditing: false,
@@ -58,13 +60,15 @@ export default {
 
     const doPop = () => {
       state.isPopped = true
-      window.eventBus.emit('toggle-overlay', true)
+      store.toggleOverlayTrue();
+      // window.eventBus.emit('toggle-overlay', true)
     }
 
     const undoPop = () => {
       state.isPopped = false
       state.isEditing = false
-      window.eventBus.emit('toggle-overlay', false)
+      store.toggleOverlayFalse();
+      // window.eventBus.emit('toggle-overlay', false)
     }
 
      const startEditing = () => {

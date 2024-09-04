@@ -22,69 +22,55 @@
   </main>
 </template>
 
-<script>
+<script setup>
 //imports
 import {ref, onMounted, watch} from 'vue'
 import {data} from '@/data.js'
 
 //functions
-import {addNerCard, editCardText,deleteCard} from '@/cards.js'
+import {addNerCard, editCardText, deleteCard} from '@/cards.js'
 import {addNewList, editListTitle} from '@/lists.js'
 
 import List from '@/components/List.vue'  // @ is an alias to /src
 import ListCreateForm from '@/components/ListCreateForm.vue'
 
-import { MainStore } from '@/store.js';
-
-export default {
-  components: {
-    List,
-    ListCreateForm,
-  },
-
-  setup() {
-
-    const lists = ref(data)
-    const overlay = ref(false)
-
-    const store = MainStore();
-
-    //events
-    onMounted(() => {
-      window.eventBus.on('add-card', (newCard) => {
-        addNerCard(newCard, lists.value)
-      })
-
-      window.eventBus.on('edit-list', (editedList) => {
-        editListTitle(editedList, lists.value)
-      })
-
-      // window.eventBus.on('toggle-overlay', (value) => {
-      //   overlay.value = value
-      // })
-
-      watch(() => store.overlay, (value) => {
-        overlay.value = value
-        console.log('overlay', overlay.value)
-      })
-
-      window.eventBus.on('delete-card', (card) => {
-        deleteCard(card, lists.value)
-      })
-
-      window.eventBus.on('edit-card-text', (card) => {
-        editCardText(card, lists.value)
-      })
-    })
+import {MainStore} from '@/store.js';
 
 
-    return {
-      lists,
-      addNewList,
-      overlay
-    }
-  }
-}
+const lists = ref(data)
+const overlay = ref(false)
+
+const store = MainStore();
+
+//events
+onMounted(() => {
+  window.eventBus.on('add-card', (newCard) => {
+    addNerCard(newCard, lists.value)
+  })
+
+  window.eventBus.on('edit-list', (editedList) => {
+    editListTitle(editedList, lists.value)
+  })
+
+  // window.eventBus.on('toggle-overlay', (value) => {
+  //   overlay.value = value
+  // })
+
+  watch(() => store.overlay, (value) => {
+    overlay.value = value
+    console.log('overlay', overlay.value)
+  })
+
+  window.eventBus.on('delete-card', (card) => {
+    deleteCard(card, lists.value)
+  })
+
+  window.eventBus.on('edit-card-text', (card) => {
+    editCardText(card, lists.value)
+  })
+})
+
+
 </script>
 
 <style scoped>
@@ -99,7 +85,7 @@ export default {
   transform: scale(0.75);
 }
 
-#overlay{
+#overlay {
   transform: scale(1);
 }
 </style>
